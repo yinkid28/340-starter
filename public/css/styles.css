@@ -4,3 +4,155 @@
 *:after {
   box-sizing: border-box;
 }
+
+
+
+/* Header Layout */
+#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.siteName a {
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #3a3a3a;
+}
+
+#tools a {
+  text-decoration: none;
+  color: #3a3a3a;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+/* Navigation Bar Styling */
+nav {
+  background-color: #2b2b35; 
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  margin: 0;
+  padding: 15px 0;
+}
+
+nav ul li {
+  color: white;
+  font-weight: bold;
+}
+
+
+nav ul li:hover {
+  background-color: #4ed3f1;
+  color: black;
+  cursor: pointer;
+}
+
+
+body {
+  background-image: url("/images/site/checkerboard.jpg"); 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+#wrapper {
+  background-color: #fff;
+  width: 95%;
+  max-width: 1000px;
+  border: 5px solid #4ed3f1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+main {
+  padding: 10px;
+}
+
+/* ----- Hero Section ----- */
+.hero-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.hero-image-box img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-text {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  color: #00a6ce;
+  border: 1px solid #00a6ce;
+}
+
+.hero-text h3, .hero-text p {
+  margin: 0;
+  padding: 2px 0;
+}
+
+.hero-text button {
+  background-color: #00a6ce;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ----- Upgrades & Reviews ----- */
+.upgrade-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.upgrade-grid figure {
+  margin: 0;
+  text-align: center;
+  background-color: #00a6ce;
+  padding: 10px;
+  border: 1px solid #333;
+}
+
+.upgrade-grid img {
+  max-width: 80px;
+  height: auto;
+}
+
+.reviews ul {
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+
+@media screen and (min-width: 650px) {
+  .flex-content {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+  }
+
+  .upgrades, .reviews {
+      width: 50%;
+  }
+
+  .hero-text {
+      top: 50px;
+      left: 50px;
+      font-size: 1.2rem;
+  }
+}
