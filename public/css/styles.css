@@ -1,158 +1,182 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
+/* =========================================
+   MOBILE FIRST STYLES (Default)
+   ========================================= */
+
+   * {
+    box-sizing: border-box;
 }
-
-
-
-/* Header Layout */
-#top-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-}
-
-.siteName a {
-  font-size: 2rem;
-  font-weight: bold;
-  text-decoration: none;
-  color: #3a3a3a;
-}
-
-#tools a {
-  text-decoration: none;
-  color: #3a3a3a;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-}
-
-/* Navigation Bar Styling */
-nav {
-  background-color: #2b2b35; 
-}
-
-nav ul {
-  list-style-type: none;
-  display: flex;
-  justify-content: space-around;
-  margin: 0;
-  padding: 15px 0;
-}
-
-nav ul li {
-  color: white;
-  font-weight: bold;
-}
-
-
-nav ul li:hover {
-  background-color: #4ed3f1;
-  color: black;
-  cursor: pointer;
-}
-
 
 body {
-  background-image: url("/images/site/checkerboard.jpg"); 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
+    /* No checkerboard on mobile per instructor feedback */
+    background-color: #fff; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 #wrapper {
-  background-color: #fff;
-  width: 95%;
-  max-width: 1000px;
-  border: 5px solid #4ed3f1;
-  border-radius: 10px;
-  overflow: hidden;
+    /* No border or background image on mobile wrapper */
+    width: 100%;
+    margin: 0 auto;
 }
 
 main {
-  padding: 10px;
+    padding: 20px;
+}
+
+/* ----- Header ----- */
+#top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.siteName a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+#tools a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+/* ----- Navigation (WAVE FIX: Dark background, light text) ----- */
+nav {
+    background-color: #2b2b35; /* Dark for contrast */
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    margin: 0;
+}
+
+nav ul li {
+    color: #ffffff; /* High contrast for WAVE */
+    font-weight: bold;
 }
 
 /* ----- Hero Section ----- */
 .hero-container {
-  position: relative;
-  margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 30px;
 }
 
 .hero-image-box img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
 .hero-text {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  color: #00a6ce;
-  border: 1px solid #00a6ce;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 10px;
+    border: 1px solid #00a6ce;
 }
 
-.hero-text h3, .hero-text p {
-  margin: 0;
-  padding: 2px 0;
+.hero-text h3 {
+    margin: 0;
+    color: #00a6ce;
 }
 
+.hero-text p {
+    color: #333;
+    margin: 5px 0;
+}
+
+/* WAVE FIX: Black text on blue button for contrast */
 .hero-text button {
-  background-color: #00a6ce;
-  border: none;
-  padding: 10px;
-  font-weight: bold;
-  cursor: pointer;
+    background-color: #00a6ce;
+    color: #000000; 
+    padding: 10px;
+    border: 1px solid #333;
+    font-weight: bold;
 }
 
-/* ----- Upgrades & Reviews ----- */
+/* ----- Reviews & Upgrades ----- */
+.flex-content h3 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
 .upgrade-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
 .upgrade-grid figure {
-  margin: 0;
-  text-align: center;
-  background-color: #00a6ce;
-  padding: 10px;
-  border: 1px solid #333;
+    margin: 0;
+    text-align: center;
+    background-color: #00a6ce;
+    padding: 15px;
+    border: 1px solid #333;
 }
 
-.upgrade-grid img {
-  max-width: 80px;
-  height: auto;
+/* WAVE FIX: Black links on blue backgrounds */
+.upgrade-grid figcaption a {
+    color: #000000;
+    font-weight: bold;
 }
 
 .reviews ul {
-  padding-left: 20px;
-  line-height: 1.8;
+    line-height: 1.8;
 }
 
+/* ----- Footer ----- */
+footer {
+    padding: 20px;
+}
 
-@media screen and (min-width: 650px) {
-  .flex-content {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 30px;
-  }
+footer hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin-bottom: 10px;
+}
 
-  .upgrades, .reviews {
-      width: 50%;
-  }
+/* =========================================
+   LARGE SCREEN STYLES (Desktop)
+   ========================================= */
 
-  .hero-text {
-      top: 50px;
-      left: 50px;
-      font-size: 1.2rem;
-  }
+@media screen and (min-width: 700px) {
+    body {
+        /* Checkerboard ONNLY*/
+        background-image: url("/images/site/checkerboard.jpg");
+        padding: 40px 0;
+    }
+
+    #wrapper {
+        width: 90%;
+        max-width: 1000px;
+        background-color: #fff;
+        border: 5px solid #4ed3f1;
+        border-radius: 5px;
+    }
+
+    .flex-content {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        gap: 40px;
+    }
+
+    .upgrades, .reviews {
+        width: 48%;
+    }
+
+    .hero-text {
+        top: 40px;
+        left: 40px;
+        padding: 20px;
+    }
 }
