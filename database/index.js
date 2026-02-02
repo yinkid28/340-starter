@@ -1,19 +1,31 @@
 const { Pool } = require("pg")
 require("dotenv").config()
 
+/* ***************
+ * Connection Pool
+ * *************** */
 let pool
-// Use a single configuration that works for Render Internal connections
-pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false, // This allows the connection even if the certificate isn't "public"
-  },
-})
+if (process.env.NODE_ENV == "development") {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  })
+} else {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false, // This is mandatory for Render
+    },
+  })
+}
 
 module.exports = {
   async query(text, params) {
     try {
       const res = await pool.query(text, params)
+      // console.log("executed query", { text }) // Optional: cleaner logs
       return res
     } catch (error) {
       console.error("error in query", { text })
