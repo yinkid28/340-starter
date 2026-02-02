@@ -60,12 +60,12 @@ app.use(async (err, req, res, next) => {
 /* ***********************
  * Local Server Information
  *************************/
-const port = process.env.PORT;
+const port = process.env.PORT || 10000 ;
 const host = process.env.HOST;
 
 /* ***********************
  * Log statement
  *************************/
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`);
+  console.log(`app listening on port ${port}`);
 });
