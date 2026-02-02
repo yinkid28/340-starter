@@ -24,7 +24,6 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
-
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
@@ -34,20 +33,17 @@ Util.buildClassificationGrid = async function(data){
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => { 
       grid += '<li>'
-      grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
-      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
-      + 'details"><img src="' + vehicle.inv_thumbnail 
-      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-      +' on CSE Motors" /></a>'
+      // LINK ON IMAGE
+      grid +=  `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
+      grid += `<img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}"></a>`
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
-      grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
-      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
-      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
+      // LINK ON TEXT
+      grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">` 
+      grid += `${vehicle.inv_make} ${vehicle.inv_model}</a>`
       grid += '</h2>'
-      grid += '<span>$' 
-      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += '<span>' + new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price) + '</span>'
       grid += '</div>'
       grid += '</li>'
     })
@@ -58,5 +54,37 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+
+
+/* **************************************
+* Build the vehicle detail view HTML
+* ************************************ */
+Util.buildVehicleDetailGrid = async function(data){
+  // Formatters for high-quality presentation
+  const moneyFormat = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  })
+  const milesFormat = new Intl.NumberFormat('en-US')
+
+  let display = '<div id="detail-display">'
+  // Wrap image in a div for easier CSS grid/flex side-by-side positioning
+  display += `<div class="detail-image"><img src="${data.inv_image}" alt="Image of ${data.inv_make} ${data.inv_model}"></div>`
+  
+  display += '<div id="vehicle-details">'
+  display += `<h2>${data.inv_year} ${data.inv_make} ${data.inv_model}</h2>`
+  display += `<p class="price-box"><strong>Price:</strong> ${moneyFormat.format(data.inv_price)}</p>`
+  display += `<p><strong>Description:</strong> ${data.inv_description}</p>`
+  display += `<p><strong>Color:</strong> ${data.inv_color}</p>`
+  display += `<p><strong>Mileage:</strong> ${milesFormat.format(data.inv_miles)} miles</p>`
+  display += '</div></div>'
+  return display
+}
+
+/* ****************************************
+ * Middleware to check token and return next()
+ **************************************** */
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 module.exports = Util

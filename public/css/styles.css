@@ -7,7 +7,6 @@
 }
 
 body {
-    /* No checkerboard on mobile per instructor feedback */
     background-color: #fff; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -15,7 +14,6 @@ body {
 }
 
 #wrapper {
-    /* No border or background image on mobile wrapper */
     width: 100%;
     margin: 0 auto;
 }
@@ -46,9 +44,9 @@ main {
     font-size: 0.8rem;
 }
 
-/* ----- Navigation (WAVE FIX: Dark background, light text) ----- */
+/* ----- Navigation ----- */
 nav {
-    background-color: #2b2b35; /* Dark for contrast */
+    background-color: #2b2b35; 
 }
 
 nav ul {
@@ -60,7 +58,7 @@ nav ul {
 }
 
 nav ul li {
-    color: #ffffff; /* High contrast for WAVE */
+    color: #ffffff; 
     font-weight: bold;
 }
 
@@ -94,13 +92,45 @@ nav ul li {
     margin: 5px 0;
 }
 
-/* WAVE FIX: Black text on blue button for contrast */
 .hero-text button {
     background-color: #00a6ce;
     color: #000000; 
     padding: 10px;
     border: 1px solid #333;
     font-weight: bold;
+}
+
+/* ----- Inventory Detail View (Task 1) ----- */
+#detail-display {
+    display: flex;
+    flex-direction: column; /* Stacked for mobile */
+    gap: 20px;
+    align-items: center;
+}
+
+#detail-display img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 5px;
+}
+
+#vehicle-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+#vehicle-details h2 {
+    margin-top: 0;
+}
+
+.price-box {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #d10000;
+    margin: 15px 0;
 }
 
 /* ----- Reviews & Upgrades ----- */
@@ -123,7 +153,6 @@ nav ul li {
     border: 1px solid #333;
 }
 
-/* WAVE FIX: Black links on blue backgrounds */
 .upgrade-grid figcaption a {
     color: #000000;
     font-weight: bold;
@@ -150,7 +179,6 @@ footer hr {
 
 @media screen and (min-width: 700px) {
     body {
-        /* Checkerboard ONNLY*/
         background-image: url("/images/site/checkerboard.jpg");
         padding: 40px 0;
     }
@@ -161,6 +189,21 @@ footer hr {
         background-color: #fff;
         border: 5px solid #4ed3f1;
         border-radius: 5px;
+    }
+
+    /* Side-by-side for Desktop */
+    #detail-display {
+        flex-direction: row; 
+        align-items: flex-start;
+        gap: 40px;
+    }
+
+    #detail-display img {
+        width: 50%;
+    }
+
+    #vehicle-details {
+        width: 50%;
     }
 
     .flex-content {
