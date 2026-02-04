@@ -223,3 +223,86 @@ footer hr {
         padding: 20px;
     }
 }
+
+
+
+/* =========================================
+   ACCOUNT & FORM STYLES 
+   ========================================= */
+
+   .account-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#loginForm fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#loginForm label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#loginForm input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-info {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.btn {
+    background-color: #00a6ce; /* Matches your hero button */
+    color: #000;
+    padding: 12px;
+    border: 1px solid #333;
+    margin-top: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #2b2b35;
+    color: #fff;
+}
+
+/* Style for Flash Messages */
+.notice {
+    color: #d10000; /* Matches your price color */
+    font-style: italic;
+    list-style: none;
+    padding: 10px;
+    background-color: #ffeeee;
+    border-left: 5px solid #d10000;
+    margin-bottom: 20px;
+}
+
+.account-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.account-link a {
+    color: #00a6ce;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.account-link a:hover {
+    text-decoration: underline;
+}

@@ -6,16 +6,41 @@
 /* ***********************
  * Require Statements
  *************************/
+
+const session = require("express-session")
+const pool = require('./database/')
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 require("dotenv").config();
 const app = express();
+const bodyParser = require("body-parser")
 
 // REQUIRE YOUR ROUTES AND UTILITIES
 const inventoryRoute = require("./routes/inventoryRoute")
 const staticRoutes = require("./routes/static");
 const utilities = require("./utilities/") 
 const baseController = require("./controllers/baseController");
+const accountRoute = require("./routes/accountRoute")
+
+
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+
+app.use(require('connect-flash')())
+app.use(function(req, res, next){
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
+
 
 /* ***********************
  * View Engine and Templates
@@ -24,24 +49,33 @@ app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
 /* ***********************
  * Routes
- *************************/
+ * *************************/
 app.use(staticRoutes);
 
 // Index route
 app.get("/", baseController.buildHome);
 
 // Inventory routes
-app.use("/inv", inventoryRoute)
+app.use("/inv", inventoryRoute);
+
+// Account routes - MOVE THIS HERE
+app.use("/account", accountRoute);
 
 /* ***********************
  * File Not Found Route
- * Task 2: Place this AFTER all other routes but BEFORE the error handler
+ * Place this AFTER all other routes
  *************************/
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
+
+app.use("/account", accountRoute)
 
 /* ***********************
 * Express Error Handler
@@ -55,7 +89,7 @@ app.use(async (err, req, res, next) => {
     message: err.message,
     nav
   })
-})
+});
 
 /* ***********************
  * Local Server Information
