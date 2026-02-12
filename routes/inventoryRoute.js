@@ -16,26 +16,28 @@ router.get("/detail/:invId", utilities.handleErrors(invController.buildByInvId))
 router.get("/footer-error", utilities.handleErrors(invController.triggerError));
 router.get("/trigger-error", utilities.handleErrors(invController.triggerError));
 
-// Route to build inventory management view
-router.get("/", utilities.handleErrors(invController.buildManagement))
+// Route to build inventory management view (protected - Employee/Admin only)
+router.get("/", utilities.checkAccountType, utilities.handleErrors(invController.buildManagement))
 
-// --- Task 2: Add Classification Routes ---
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
+// --- Task 2: Add Classification Routes (protected - Employee/Admin only) ---
+router.get("/add-classification", utilities.checkAccountType, utilities.handleErrors(invController.buildAddClassification));
 
 // POST route with validation middleware added
 router.post(
     "/add-classification",
+    utilities.checkAccountType,
     invValidate.classificationRules(),
     invValidate.checkClassificationData,
     utilities.handleErrors(invController.addClassification)
 );
 
-// --- Task 3: Add Inventory Routes ---
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+// --- Task 3: Add Inventory Routes (protected - Employee/Admin only) ---
+router.get("/add-inventory", utilities.checkAccountType, utilities.handleErrors(invController.buildAddInventory));
 
 // POST route with validation middleware added
 router.post(
     "/add-inventory",
+    utilities.checkAccountType,
     invValidate.inventoryRules(),
     invValidate.checkInventoryData,
     utilities.handleErrors(invController.addInventory)

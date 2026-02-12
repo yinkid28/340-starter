@@ -1,0 +1,41 @@
+<h1><%= title %></h1>
+<%- messages() %>
+
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<div class="update-container">
+  <form action="/account/update" method="post">
+    <fieldset>
+      <legend>Account Update</legend>
+      <label for="account_firstname">First Name</label>
+      <input type="text" name="account_firstname" id="account_firstname" required value="<%= account_firstname %>">
+
+      <label for="account_lastname">Last Name</label>
+      <input type="text" name="account_lastname" id="account_lastname" required value="<%= account_lastname %>">
+
+      <label for="account_email">Email Address</label>
+      <input type="email" name="account_email" id="account_email" required value="<%= account_email %>">
+
+      <input type="hidden" name="account_id" value="<%= account_id %>">
+      <button type="submit">Update Info</button>
+    </fieldset>
+  </form>
+
+  <form action="/account/password" method="post">
+    <fieldset>
+      <legend>Change Password</legend>
+      <p>Changing your password will overwrite the current one. Must be 12+ characters, 1 uppercase, 1 number, 1 special character.</p>
+      <label for="account_password">New Password</label>
+      <input type="password" name="account_password" id="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+
+      <input type="hidden" name="account_id" value="<%= account_id %>">
+      <button type="submit">Update Password</button>
+    </fieldset>
+  </form>
+</div>

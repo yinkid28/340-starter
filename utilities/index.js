@@ -1,4 +1,6 @@
 const invModel = require("../models/inventory-model")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 const Util = {}
 
 /* ************************
@@ -17,7 +19,7 @@ Util.getNav = async function (req, res, next) {
       row.classification_name +
       ' vehicles">' +
       row.classification_name +
-      "</a>"
+      '</a>'
     list += "</li>"
   })
   list += "</ul>"
@@ -25,21 +27,19 @@ Util.getNav = async function (req, res, next) {
 }
 
 /* **************************************
-* Build the classification view HTML
-* ************************************ */
+ * Build the classification grid
+ * ************************************ */
 Util.buildClassificationGrid = async function(data){
   let grid
   if(data.length > 0){
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => { 
       grid += '<li>'
-      // LINK ON IMAGE
-      grid +=  `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
+      grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
       grid += `<img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}"></a>`
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
-      // LINK ON TEXT
       grid += `<a href="/inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">` 
       grid += `${vehicle.inv_make} ${vehicle.inv_model}</a>`
       grid += '</h2>'
@@ -49,29 +49,19 @@ Util.buildClassificationGrid = async function(data){
     })
     grid += '</ul>'
   } else { 
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
   return grid
 }
 
-
-
 /* **************************************
-* Build the vehicle detail view HTML
-* ************************************ */
+ * Build the vehicle detail view
+ * ************************************ */
 Util.buildVehicleDetailGrid = async function(data){
-  // Formatters for high-quality presentation
-  const moneyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0
-  })
+  const moneyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
   const milesFormat = new Intl.NumberFormat('en-US')
-
   let display = '<div id="detail-display">'
-  // Wrap image in a div for easier CSS grid/flex side-by-side positioning
   display += `<div class="detail-image"><img src="${data.inv_image}" alt="Image of ${data.inv_make} ${data.inv_model}"></div>`
-  
   display += '<div id="vehicle-details">'
   display += `<h2>${data.inv_year} ${data.inv_make} ${data.inv_model}</h2>`
   display += `<p class="price-box"><strong>Price:</strong> ${moneyFormat.format(data.inv_price)}</p>`
@@ -83,25 +73,20 @@ Util.buildVehicleDetailGrid = async function(data){
 }
 
 /* ****************************************
- * Middleware to check token and return next()
+ * Middleware For Handling Errors
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
-
 /* ****************************************
- * Build classification list for the form
+ * Build classification list for forms
  **************************************** */
 Util.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications()
-  let classificationList =
-    '<select name="classification_id" id="classificationList" required>'
+  let classificationList = '<select name="classification_id" id="classificationList" required>'
   classificationList += "<option value=''>Choose a Classification</option>"
   data.rows.forEach((row) => {
     classificationList += '<option value="' + row.classification_id + '"'
-    if (
-      classification_id != null &&
-      row.classification_id == classification_id
-    ) {
+    if (classification_id != null && row.classification_id == classification_id) {
       classificationList += " selected "
     }
     classificationList += ">" + row.classification_name + "</option>"
@@ -110,4 +95,57 @@ Util.buildClassificationList = async function (classification_id = null) {
   return classificationList
 }
 
+/* ****************************************
+ * Task 1: Check JWT Token Middleware
+ **************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          res.clearCookie("jwt")
+          res.locals.loggedin = 0
+          res.locals.accountData = null
+          next()
+        } else {
+          res.locals.accountData = accountData
+          res.locals.loggedin = 1
+          next()
+        }
+      }
+    )
+  } else {
+    res.locals.loggedin = 0
+    res.locals.accountData = null
+    next()
+  }
+}
+
+/* ****************************************
+ * Task 2: Check Login Middleware
+ **************************************** */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
+
+/* ****************************************
+ * Task 2: Check Account Type (Employee/Admin)
+ **************************************** */
+Util.checkAccountType = (req, res, next) => {
+  if (res.locals.loggedin && (res.locals.accountData.account_type === 'Employee' || res.locals.accountData.account_type === 'Admin')) {
+    next()
+  } else {
+    req.flash("notice", "You do not have permission to access that resource.")
+    return res.redirect("/account/login")
+  }
+}
+
+// THIS IS THE MOST IMPORTANT PART FOR YOUR ERROR
 module.exports = Util
