@@ -1,2 +1,10 @@
 <h1><%= title %></h1>
 <%- vehicleDisplay %>
+
+<div class="test-drive-cta">
+  <% if (locals.loggedin) { %>
+    <a href="/test-drive/book/<%= inv_id %>" class="btn-test-drive">Book a Test Drive</a>
+  <% } else { %>
+    <p><a href="/account/login">Log in</a> to book a test drive for this vehicle.</p>
+  <% } %>
+</div>

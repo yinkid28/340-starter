@@ -9,9 +9,19 @@
   <p><a href="/account/update/<%= locals.accountData.account_id %>">Update Account Information</a></p>
 </div>
 
+<div class="test-drive-section">
+  <h3>Test Drives</h3>
+  <p><a href="/test-drive/my-bookings">My Test Drive Bookings</a></p>
+</div>
+
 <% if (locals.accountData.account_type === 'Employee' || locals.accountData.account_type === 'Admin') { %>
   <div class="inventory-management">
     <h3>Inventory Management</h3>
     <p><a href="/inv/">Manage Inventory</a></p>
+  </div>
+
+  <div class="test-drive-management">
+    <h3>Test Drive Management</h3>
+    <p><a href="/test-drive/manage">Manage All Test Drive Bookings</a></p>
   </div>
 <% } %>

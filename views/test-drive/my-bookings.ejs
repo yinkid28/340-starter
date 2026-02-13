@@ -1,0 +1,42 @@
+<h1><%= title %></h1>
+<%- messages() %>
+
+<% if (bookings && bookings.length > 0) { %>
+  <div class="bookings-list">
+    <% bookings.forEach(booking => { %>
+      <div class="booking-card">
+        <div class="booking-vehicle">
+          <img src="<%= booking.inv_thumbnail %>" alt="<%= booking.inv_make %> <%= booking.inv_model %>">
+          <div class="vehicle-info">
+            <h3><%= booking.inv_year %> <%= booking.inv_make %> <%= booking.inv_model %></h3>
+          </div>
+        </div>
+        <div class="booking-details">
+          <p><strong>Date:</strong> <%= new Date(booking.test_drive_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+          <p><strong>Time:</strong> <%= booking.test_drive_time %></p>
+          <p><strong>Phone:</strong> <%= booking.test_drive_phone %></p>
+          <% if (booking.test_drive_message) { %>
+            <p><strong>Notes:</strong> <%= booking.test_drive_message %></p>
+          <% } %>
+          <p><strong>Status:</strong>
+            <span class="status status-<%= booking.test_drive_status.toLowerCase() %>">
+              <%= booking.test_drive_status %>
+            </span>
+          </p>
+          <p class="booking-date"><small>Booked on: <%= new Date(booking.created_at).toLocaleDateString() %></small></p>
+        </div>
+        <div class="booking-actions">
+          <% if (booking.test_drive_status === 'Pending') { %>
+            <a href="/test-drive/cancel/<%= booking.test_drive_id %>" class="btn-cancel"
+               onclick="return confirm('Are you sure you want to cancel this test drive?')">Cancel Booking</a>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <p class="notice">You have no test drive bookings yet.</p>
+  <p><a href="/">Browse our inventory</a> to find a vehicle you'd like to test drive.</p>
+<% } %>
+
+<p><a href="/account/">&larr; Back to Account Management</a></p>

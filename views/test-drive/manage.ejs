@@ -1,0 +1,59 @@
+<h1><%= title %></h1>
+<%- messages() %>
+
+<% if (bookings && bookings.length > 0) { %>
+  <table class="bookings-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Vehicle</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% bookings.forEach(booking => { %>
+        <tr>
+          <td><%= booking.test_drive_id %></td>
+          <td>
+            <%= booking.account_firstname %> <%= booking.account_lastname %><br>
+            <small><%= booking.account_email %></small>
+          </td>
+          <td><%= booking.inv_year %> <%= booking.inv_make %> <%= booking.inv_model %></td>
+          <td><%= new Date(booking.test_drive_date).toLocaleDateString() %></td>
+          <td><%= booking.test_drive_time %></td>
+          <td><%= booking.test_drive_phone %></td>
+          <td>
+            <span class="status status-<%= booking.test_drive_status.toLowerCase() %>">
+              <%= booking.test_drive_status %>
+            </span>
+          </td>
+          <td>
+            <form action="/test-drive/update-status" method="post" class="status-form">
+              <input type="hidden" name="test_drive_id" value="<%= booking.test_drive_id %>">
+              <select name="test_drive_status" onchange="this.form.submit()">
+                <option value="Pending" <%= booking.test_drive_status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                <option value="Confirmed" <%= booking.test_drive_status === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
+                <option value="Completed" <%= booking.test_drive_status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                <option value="Cancelled" <%= booking.test_drive_status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+              </select>
+            </form>
+          </td>
+        </tr>
+        <% if (booking.test_drive_message) { %>
+          <tr class="message-row">
+            <td colspan="8"><strong>Notes:</strong> <%= booking.test_drive_message %></td>
+          </tr>
+        <% } %>
+      <% }) %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p class="notice">No test drive bookings yet.</p>
+<% } %>
+
+<p><a href="/account/">&larr; Back to Account Management</a></p>

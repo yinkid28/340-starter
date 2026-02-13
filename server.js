@@ -19,6 +19,7 @@ const utilities = require("./utilities/");
 const staticRoutes = require("./routes/static");
 const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
+const testDriveRoute = require("./routes/testDriveRoute");
 const baseController = require("./controllers/baseController");
 
 const app = express();
@@ -74,6 +75,9 @@ app.use("/inv", inventoryRoute);
 
 // Account routes
 app.use("/account", accountRoute);
+
+// Test Drive routes
+app.use("/test-drive", testDriveRoute);
 
 /* ***********************
  * File Not Found Route

@@ -1,0 +1,55 @@
+<h1><%= title %></h1>
+<%- messages() %>
+
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<div class="booking-container">
+  <div class="vehicle-preview">
+    <img src="<%= vehicle.inv_thumbnail %>" alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+    <h2><%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %></h2>
+    <p class="price">Price: $<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
+  </div>
+
+  <form action="/test-drive/book" method="post" class="booking-form">
+    <fieldset>
+      <legend>Schedule Your Test Drive</legend>
+
+      <label for="test_drive_date">Preferred Date</label>
+      <input type="date" name="test_drive_date" id="test_drive_date" required
+             value="<%= test_drive_date %>" min="<%= new Date().toISOString().split('T')[0] %>">
+
+      <label for="test_drive_time">Preferred Time</label>
+      <select name="test_drive_time" id="test_drive_time" required>
+        <option value="">Select a time slot</option>
+        <option value="9:00 AM" <%= test_drive_time === '9:00 AM' ? 'selected' : '' %>>9:00 AM</option>
+        <option value="10:00 AM" <%= test_drive_time === '10:00 AM' ? 'selected' : '' %>>10:00 AM</option>
+        <option value="11:00 AM" <%= test_drive_time === '11:00 AM' ? 'selected' : '' %>>11:00 AM</option>
+        <option value="12:00 PM" <%= test_drive_time === '12:00 PM' ? 'selected' : '' %>>12:00 PM</option>
+        <option value="1:00 PM" <%= test_drive_time === '1:00 PM' ? 'selected' : '' %>>1:00 PM</option>
+        <option value="2:00 PM" <%= test_drive_time === '2:00 PM' ? 'selected' : '' %>>2:00 PM</option>
+        <option value="3:00 PM" <%= test_drive_time === '3:00 PM' ? 'selected' : '' %>>3:00 PM</option>
+        <option value="4:00 PM" <%= test_drive_time === '4:00 PM' ? 'selected' : '' %>>4:00 PM</option>
+        <option value="5:00 PM" <%= test_drive_time === '5:00 PM' ? 'selected' : '' %>>5:00 PM</option>
+      </select>
+
+      <label for="test_drive_phone">Contact Phone</label>
+      <input type="tel" name="test_drive_phone" id="test_drive_phone" required
+             value="<%= test_drive_phone %>" placeholder="e.g., 555-123-4567">
+
+      <label for="test_drive_message">Additional Notes (Optional)</label>
+      <textarea name="test_drive_message" id="test_drive_message" rows="3"
+                placeholder="Any special requests or questions?"><%= test_drive_message %></textarea>
+
+      <input type="hidden" name="inv_id" value="<%= inv_id %>">
+      <button type="submit">Book Test Drive</button>
+    </fieldset>
+  </form>
+</div>
+
+<p><a href="/inv/detail/<%= inv_id %>">&larr; Back to Vehicle Details</a></p>
