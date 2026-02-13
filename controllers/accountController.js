@@ -99,7 +99,7 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/") 
+      return res.redirect("/account/")
     } else {
       req.flash("notice", "Please check your credentials and try again.")
       res.status(400).render("account/login", {
@@ -110,7 +110,14 @@ async function accountLogin(req, res) {
       })
     }
   } catch (error) {
-    return new Error('Access Forbidden')
+    console.error("Login error:", error)
+    req.flash("notice", "Sorry, there was an error processing your login.")
+    res.status(500).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    })
   }
 }
 
